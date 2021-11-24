@@ -15,8 +15,10 @@ import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.firestore.auth.FirebaseAuthCredentialsProvider;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -49,7 +51,7 @@ public class MainFeedHot extends Fragment {
                 .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
                     @Override
                     public void onSuccess(DocumentReference documentReference) {
-                        Toast.makeText(MyApplication.ApplicationContext(), "글을 성공적으로 저장 했습니다.", Toast.LENGTH_LONG).show();
+
                     }
                 })
                 .addOnFailureListener(new OnFailureListener() {

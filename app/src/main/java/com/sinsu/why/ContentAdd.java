@@ -1,8 +1,11 @@
 package com.sinsu.why;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.view.MotionEvent;
 import android.widget.LinearLayout;
+
+import androidx.appcompat.app.AppCompatActivity;
 
 public class ContentAdd {
 
@@ -26,16 +29,16 @@ public class ContentAdd {
 
             int action = event.getAction();
 
-            switch (action){
+            switch (action) {
                 case MotionEvent.ACTION_DOWN:
                     nLayout.setAlpha(0.4f);
                     break;
                 case MotionEvent.ACTION_UP:
                 case MotionEvent.ACTION_CANCEL:
                     nLayout.setAlpha(1.0f);
+                    Intent intent = new Intent(MyApplication.ApplicationContext(), Content.class);
+                    MyApplication.ApplicationContext().startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                     break;
-                case MotionEvent.ACTION_BUTTON_PRESS:
-                    Intent intent = new Intent();
             }
 
             return true;

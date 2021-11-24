@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="#34495e"
-    tools:context=".Question">
+    tools:context=".Content">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
@@ -22,6 +22,31 @@
         app:layout_constraintVertical_bias="0.0">
 
         <LinearLayout
+            android:id="@+id/titleLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="10dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/kotra_hope"
+                android:shadowColor="@color/black"
+                android:shadowDx="7.0"
+                android:shadowDy=".0"
+                android:shadowRadius="7.0"
+                android:text="@string/app_name"
+                android:textColor="@color/white"
+                android:textSize="48sp" />
+
+        </LinearLayout>
+
+        <LinearLayout
             android:id="@+id/linearLayout3"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -29,18 +54,17 @@
             android:orientation="horizontal"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintTop_toBottomOf="@id/titleLayout">
 
-            <EditText
-                android:id="@+id/questionTitle"
-                android:layout_width="match_parent"
+            <TextView
+                android:id="@+id/contentTitle"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:ems="10"
-                android:hint="당신의 질문은 무엇인가요?"
-                android:inputType="textPersonName"
+                android:text="제목이 보입니다."
                 android:textAlignment="center"
-                android:textColor="@color/white" />
+                android:textColor="@color/white"
+                android:textSize="24sp" />
         </LinearLayout>
 
         <FrameLayout
@@ -55,17 +79,15 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
-            <EditText
-                android:id="@+id/questionEdt"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:ems="10"
-                android:gravity="start|top"
-                android:hint="질문하기"
-                android:inputType="textMultiLine"
-                android:textAlignment="center"
-                android:textColor="@color/white"
-                android:textColorHint="#595959" />
+            <TextView
+                android:id="@+id/contentDes"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_margin="10dp"
+                android:gravity="center"
+                android:text="내용이 보입니다."
+                android:textColor="@color/white" />
         </FrameLayout>
 
         <LinearLayout
@@ -79,11 +101,11 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <Button
-                android:id="@+id/button"
+                android:id="@+id/btnContentCommets"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="내 질문 목록"
+                android:text="댓글보기"
                 android:textSize="14sp" />
 
             <Space
@@ -92,13 +114,12 @@
                 android:layout_weight="1" />
 
             <Button
-                android:id="@+id/btnQuestionUpload"
+                android:id="@+id/btnContentAnswer"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:backgroundTint="#27ae60"
-                android:text="등록하기" />
+                android:backgroundTint="#3498db"
+                android:text="답변하기" />
         </LinearLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
-
 </androidx.constraintlayout.widget.ConstraintLayout>

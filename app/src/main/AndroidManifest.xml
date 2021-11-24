@@ -12,6 +12,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.WhY">
         <activity
+            android:name=".Content"
+            android:exported="false" />
+        <activity
             android:name=".MainFeedCategory"
             android:exported="false" />
         <activity

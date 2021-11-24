@@ -33,6 +33,8 @@ public class Feed extends AppCompatActivity {
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
 
         getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, mainFeed).commit();
+        bottomNavigationView.setSelectedItemId(R.id.navigation_feed);
+
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             FragmentTransaction transaction =fragmentManager.beginTransaction();
             switch (item.getItemId()){
