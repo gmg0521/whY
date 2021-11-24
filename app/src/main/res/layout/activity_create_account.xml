@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="#34495e"
+    android:orientation="vertical"
+    tools:context=".CreateAccount">
+
+    <ImageView
+        android:id="@+id/imageView"
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:alpha=".4"
+        android:rotation="45"
+        app:srcCompat="@drawable/ic_question_answer"
+        app:tint="@android:color/tertiary_text_light" />
+
+    <ImageView
+        android:id="@+id/imageView2"
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="2dp"
+        android:layout_weight="1"
+        android:alpha=".4"
+        app:srcCompat="@drawable/ic_question"
+        app:tint="@color/white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:padding="20dp">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/kotra_hope"
+                android:shadowColor="@color/black"
+                android:shadowDx="7.0"
+                android:shadowDy=".0"
+                android:shadowRadius="7.0"
+                android:text="@string/app_name"
+                android:textColor="@color/white"
+                android:textSize="48sp" />
+
+        </LinearLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="5px"
+            android:layout_margin="10dp"
+            android:background="#606060" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:orientation="vertical">
+
+            <Button
+                android:id="@+id/btnKakaoReg"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="#FFC107"
+                android:elevation="10dp"
+                android:fontFamily="@font/kotra_hope"
+                android:stateListAnimator="@null"
+                android:text="카카오 계정으로 회원가입"
+                android:translationZ="10dp" />
+
+            <Button
+                android:id="@+id/btnGoogleReg"
+                android:layout_width="250dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:backgroundTint="#F14B4B"
+                android:elevation="10dp"
+                android:fontFamily="@font/kotra_hope"
+                android:stateListAnimator="@null"
+                android:text="구글 계정으로 회원가입"
+                android:translationZ="10dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:orientation="vertical">
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/kotra_hope"
+                android:text="이메일"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/emailEdt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:fontFamily="@font/kotra_hope"
+                android:hint="내용을 입력해주세요"
+                android:inputType="textEmailAddress"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#C8C3C3" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/kotra_hope"
+                android:text="비밀번호"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/pwdEdt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:fontFamily="@font/kotra_hope"
+                android:hint="내용을 입력해주세요"
+                android:inputType="textPassword"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#C8C3C3" />
+
+            <TextView
+                android:id="@+id/textView3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/kotra_hope"
+                android:hint="내용을 입력해주요"
+                android:text="이름"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/nameEdt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:fontFamily="@font/kotra_hope"
+                android:hint="내용을 입력해주세요"
+                android:inputType="textPersonName"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#C8C3C3" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="5dp"
+                android:layout_weight="1"
+                android:fontFamily="@font/kotra_hope"
+                android:text="닉네임"
+                android:textColor="#FFFFFF"
+                android:textSize="16sp" />
+
+            <EditText
+                android:id="@+id/nickEdt"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:ems="10"
+                android:fontFamily="@font/kotra_hope"
+                android:hint="내용을 입력해주세요"
+                android:inputType="textPersonName"
+                android:textColor="#FFFFFF"
+                android:textColorHint="#C8C3C3" />
+        </LinearLayout>
+
+        <CheckBox
+            android:id="@+id/checkBox"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="20dp"
+            android:fontFamily="@font/kotra_hope"
+            android:gravity="right|center_vertical"
+            android:text="약관 동의"
+            android:textColor="#FFFFFF"
+            android:textSize="16sp" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center_vertical"
+            android:orientation="horizontal"
+            android:weightSum="3">
+
+            <Button
+                android:id="@+id/btnCABack"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="left"
+                android:layout_weight="1"
+                android:backgroundTint="#34495e"
+                android:elevation="30dp"
+                android:fontFamily="@font/kotra_hope"
+                android:shadowColor="#000000"
+                android:stateListAnimator="@null"
+                android:text="뒤로가기"
+                android:translationZ="10dp" />
+
+            <Space
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_weight="1" />
+
+            <Button
+                android:id="@+id/btnCACreate"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:layout_weight="1"
+                android:backgroundTint="#A026BC9C"
+                android:elevation="10dp"
+                android:fontFamily="@font/kotra_hope"
+                android:stateListAnimator="@null"
+                android:text="회원가입"
+                android:translationZ="10dp" />
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>

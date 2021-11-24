@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="category">
+        <item>전체</item>
+        <item>철학</item>
+        <item>사랑</item>
+        <item>도덕</item>
+        <item>기타</item>
+    </string-array>
+</resources>

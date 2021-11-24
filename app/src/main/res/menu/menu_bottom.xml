@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:android="http://schemas.android.com/apk/res/android">
+
+    <item
+        android:id="@+id/navigation_question"
+        android:icon="@drawable/ic_question"
+        android:title="질문하기" />
+
+    <item
+        android:id="@+id/navigation_feed"
+        android:icon="@drawable/ic_question_answer"
+        android:title="피드" />
+
+    <item
+        android:id="@+id/navigation_yditor"
+        android:icon="@drawable/ic_notifications_black_24dp"
+        android:title="Y-Ditor" />
+
+    <item
+        android:id="@+id/navigation_mypage"
+        android:icon="@drawable/ic_launcher_foreground"
+        android:title="마이 페이지" />
+
+</menu>

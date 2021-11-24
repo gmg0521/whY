@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <declare-styleable name="FeedCustomView">
+        <attr name="profileImg" format="reference|integer"/>
+        <attr name="titleText" format="reference|string"/>
+        <attr name="DesText" format="reference|string"/>
+        <attr name="upLoadTimeText" format="reference|string"/>
+        <attr name="heartCount" format="reference|integer"/>
+    </declare-styleable>
+</resources>

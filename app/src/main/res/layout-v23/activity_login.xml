@@ -1,0 +1,175 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#34495e"
+    tools:context=".Login">
+
+
+    <ImageView
+        android:layout_width="50dp"
+        android:layout_height="50dp"
+        android:layout_gravity="center"
+        android:layout_weight="1"
+        android:alpha=".45"
+        android:rotation="45"
+        app:srcCompat="@drawable/ic_question_answer"
+        app:tint="@android:color/tertiary_text_light" />
+
+    <ImageView
+        android:layout_width="45dp"
+        android:layout_height="45dp"
+        android:layout_gravity="center"
+        android:layout_marginLeft="2dp"
+        android:layout_weight="1"
+        android:alpha=".45"
+        app:srcCompat="@drawable/ic_question"
+        app:tint="@color/white" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:weightSum="5">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="20dp">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:fontFamily="@font/kotra_hope"
+                android:shadowColor="@color/black"
+                android:shadowDx="7.0"
+                android:shadowDy=".0"
+                android:shadowRadius="7.0"
+                android:text="@string/app_name"
+                android:textColor="@color/white"
+                android:textSize="48sp" />
+
+        </LinearLayout>
+
+        <Space
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="4" />
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:orientation="vertical"
+            android:padding="20dp">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_weight="1"
+                        app:srcCompat="?android:attr/fingerprintAuthDrawable"
+                        tools:targetApi="m" />
+
+                    <EditText
+                        android:id="@+id/emailLoginEdt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="E-mail"
+                        android:inputType="textEmailAddress"
+                        android:minHeight="48dp" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
+
+                    <ImageView
+                        android:layout_width="32dp"
+                        android:layout_height="32dp"
+                        android:layout_weight="1"
+                        app:srcCompat="?android:attr/fingerprintAuthDrawable"
+                        app:tint="@color/white"
+                        tools:targetApi="m" />
+
+                    <EditText
+                        android:id="@+id/pwdLoginEdt"
+                        android:layout_width="wrap_content"
+                        android:layout_height="48dp"
+                        android:layout_weight="1"
+                        android:ems="10"
+                        android:hint="Password"
+                        android:inputType="textPassword" />
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_marginTop="10dp"
+                android:orientation="vertical"
+                android:padding="10dp">
+
+                <Button
+                    android:id="@+id/btnKakaoLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:backgroundTint="#FFC107"
+                    android:elevation="10dp"
+                    android:fontFamily="@font/kotra_hope"
+                    android:stateListAnimator="@null"
+                    android:text="카카오 로그인"
+                    android:translationZ="10dp" />
+
+                <Button
+                    android:id="@+id/btnGoogleLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:backgroundTint="#F14B4B"
+                    android:elevation="10dp"
+                    android:fontFamily="@font/kotra_hope"
+                    android:stateListAnimator="@null"
+                    android:text="구글 로그인"
+                    android:translationZ="10dp" />
+
+                <Button
+                    android:id="@+id/btnEmailLogin"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight="1"
+                    android:backgroundTint="#A05298DB"
+                    android:elevation="10dp"
+                    android:fontFamily="@font/kotra_hope"
+                    android:stateListAnimator="@null"
+                    android:text="이메일 로그인"
+                    android:translationZ="10dp" />
+
+            </LinearLayout>
+        </LinearLayout>
+
+    </LinearLayout>
+
+</FrameLayout>
