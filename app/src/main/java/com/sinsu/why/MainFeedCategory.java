@@ -38,7 +38,7 @@ public class MainFeedCategory extends Fragment {
         spinner = viewGroup.findViewById(R.id.categorySpinner);
         String[] item = getResources().getStringArray(R.array.category);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<String>(MyApplication.ApplicationContext(),
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(KakaoManager.ApplicationContext(),
                 android.R.layout.simple_spinner_item,
                 item);
 
@@ -50,26 +50,23 @@ public class MainFeedCategory extends Fragment {
 
         db.collection("users")
                 .get()
-                .addOnCompleteListener(new OnCompleteListener<QuerySnapshot>() {
-                    @Override
-                    public void onComplete(@NonNull Task<QuerySnapshot> task) {
-                        if (task.isSuccessful()) {
+                .addOnCompleteListener(task -> {
+                    if (task.isSuccessful()) {
 
-                            Object title = "기본";
-                            Object des = "기본";
-                            Object uploadTime = "기본";
-                            Object heartCount = 1024;
+                        Object title = "기본";
+                        Object des = "기본";
+                        Object uploadTime = "기본";
+                        Object heartCount = 1024;
 
-                            for (QueryDocumentSnapshot document : task.getResult()) {
-                                title = document.getData().get("title");
-                                des = document.getData().get("des");
-                                uploadTime = document.getData().get("uploadTime");
-                                heartCount = document.getData().get("heartCount");
-                            }
-                            addNewiew(con, title, des, uploadTime, heartCount);
-                        } else {
-                            Toast.makeText(MyApplication.ApplicationContext(), "띠용..." + task.getException(), Toast.LENGTH_LONG).show();
+                        for (QueryDocumentSnapshot document : task.getResult()) {
+                            title = document.getData().get("title");
+                            des = document.getData().get("des");
+                            uploadTime = document.getData().get("uploadTime");
+                            heartCount = document.getData().get("heartCount");
                         }
+                        addNewiew(con, title, des, uploadTime, heartCount);
+                    } else {
+                        Toast.makeText(KakaoManager.ApplicationContext(), "띠용..." + task.getException(), Toast.LENGTH_LONG).show();
                     }
                 });
 

@@ -48,18 +48,10 @@ public class MainFeedHot extends Fragment {
 
         db.collection("users")
                 .add(user)
-                .addOnSuccessListener(new OnSuccessListener<DocumentReference>() {
-                    @Override
-                    public void onSuccess(DocumentReference documentReference) {
+                .addOnSuccessListener(documentReference -> {
 
-                    }
                 })
-                .addOnFailureListener(new OnFailureListener() {
-                    @Override
-                    public void onFailure(@NonNull Exception e) {
-                        Toast.makeText(MyApplication.ApplicationContext(), "글 저장 실패.", Toast.LENGTH_LONG).show();
-                    }
-                });
+                .addOnFailureListener(e -> Toast.makeText(KakaoManager.ApplicationContext(), "글 저장 실패.", Toast.LENGTH_LONG).show());
 
 
         return viewGroup;

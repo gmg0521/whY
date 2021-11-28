@@ -68,21 +68,19 @@
             android:layout_margin="20dp"
             android:orientation="vertical">
 
-            <Button
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btnKakaoReg"
-                android:layout_width="250dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:backgroundTint="#FFC107"
+                android:background="@drawable/kakao_login_medium_wide"
                 android:elevation="10dp"
-                android:fontFamily="@font/kotra_hope"
                 android:stateListAnimator="@null"
-                android:text="카카오 계정으로 회원가입"
                 android:translationZ="10dp" />
 
             <Button
                 android:id="@+id/btnGoogleReg"
-                android:layout_width="250dp"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:backgroundTint="#F14B4B"

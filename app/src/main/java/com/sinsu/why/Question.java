@@ -48,10 +48,10 @@ public class Question extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         viewGroup = (ViewGroup) inflater.inflate(R.layout.activity_question, container, false);
 
-        title = (EditText) viewGroup.findViewById(R.id.questionTitle);
-        contents = (EditText) viewGroup.findViewById(R.id.questionEdt);
+        title = viewGroup.findViewById(R.id.questionTitle);
+        contents = viewGroup.findViewById(R.id.questionEdt);
 
-        questionUpload = (Button) viewGroup.findViewById(R.id.btnQuestionUpload);
+        questionUpload = viewGroup.findViewById(R.id.btnQuestionUpload);
 
         questionUpload.setOnClickListener(v -> {
             String t = title.getText().toString();
@@ -64,22 +64,14 @@ public class Question extends Fragment {
             postModel.heartCount = 1024;
 
             db.collection("contents")
-                    .document(postModel.userId.toString()+" " + 1 + " 번 글")
+                    .document(postModel.userId +" " + 1 + " 번 글")
                     .set(postModel)
-                    .addOnSuccessListener(new OnSuccessListener<Void>() {
-                        @Override
-                        public void onSuccess(Void unused) {
-                            Toast.makeText(MyApplication.ApplicationContext(), "글을 등록하였습니다!", Toast.LENGTH_LONG).show();
-                            Intent intent = new Intent(MyApplication.ApplicationContext(), Content.class);
-                            startActivity(intent);
-                        }
+                    .addOnSuccessListener(unused -> {
+                        Toast.makeText(KakaoManager.ApplicationContext(), "글을 등록하였습니다!", Toast.LENGTH_LONG).show();
+                        Intent intent = new Intent(KakaoManager.ApplicationContext(), Content.class);
+                        startActivity(intent);
                     })
-                    .addOnFailureListener(new OnFailureListener() {
-                        @Override
-                        public void onFailure(@NonNull Exception e) {
-                            Toast.makeText(MyApplication.ApplicationContext(), "오류가 발생하였습니다", Toast.LENGTH_SHORT).show();
-                        }
-                    });
+                    .addOnFailureListener(e -> Toast.makeText(KakaoManager.ApplicationContext(), "오류가 발생하였습니다", Toast.LENGTH_SHORT).show());
 
         });
 

@@ -1,20 +1,21 @@
 package com.sinsu.why;
 
-import androidx.annotation.NonNull;
+import android.annotation.SuppressLint;
+import android.content.Intent;
+import android.os.Bundle;
+import android.widget.TextView;
+import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
-import android.annotation.SuppressLint;
-import android.os.Bundle;
-import android.view.MenuItem;
-import android.view.MotionEvent;
-import android.widget.ImageButton;
-import android.widget.LinearLayout;
-
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.kakao.sdk.user.UserApiClient;
 
 public class Feed extends AppCompatActivity {
+
+    String strNickname, strEmail;
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private MainFeed mainFeed = new MainFeed();
@@ -29,6 +30,16 @@ public class Feed extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
+
+        Intent intent = getIntent();
+        strNickname = intent.getStringExtra("name");
+        strEmail = intent.getStringExtra("email");
+
+        TextView kakaoNickname = findViewById(R.id.kakaoNick);
+        TextView kakaoEmail = findViewById(R.id.kakaoEmail);
+        
+        kakaoNickname.setText(strNickname);
+        kakaoEmail.setText(strEmail);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
 
@@ -45,7 +56,7 @@ public class Feed extends AppCompatActivity {
                     getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, question).commit();
                     break;
                 case R.id.navigation_yditor:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, yditor).commit();;
+                    getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, yditor).commit();
                     break;
                 case R.id.navigation_mypage:
                     getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, myPage).commit();
@@ -54,6 +65,20 @@ public class Feed extends AppCompatActivity {
 
             return true;
         });
+
+        findViewById(R.id.feedFaqButton).setOnClickListener(v -> UserApiClient.getInstance().unlink(throwable -> {
+            Toast.makeText(getApplicationContext(), "로그아웃 하였습니다!", Toast.LENGTH_SHORT).show();
+            Intent backMain = new Intent(getApplicationContext(), MainActivity.class);
+            startActivity(backMain);
+            return null;
+        }));
+
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        Toast.makeText(KakaoManager.ApplicationContext(), "로그아웃 하였습니다.", Toast.LENGTH_SHORT).show();
 
     }
 }

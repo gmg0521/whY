@@ -25,21 +25,15 @@ public class MainFeed extends Fragment {
 
     ViewGroup viewGroup;
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setRetainInstance(true);
-    }
-
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
 
         viewGroup = (ViewGroup) inflater.inflate(R.layout.activity_main_feed, container, false);
 
-        ViewPager viewPager = (ViewPager) viewGroup.findViewById(R.id.container);
+        ViewPager viewPager = viewGroup.findViewById(R.id.container);
         setupViewPager(viewPager);
-        TabLayout tabLayout = (TabLayout) viewGroup.findViewById(R.id.tabs);
+        TabLayout tabLayout = viewGroup.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
 
         return viewGroup;

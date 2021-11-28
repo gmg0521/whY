@@ -19,6 +19,8 @@ public class Login extends AppCompatActivity {
 
         btnEmailLogin.setOnClickListener(v -> {
             Intent intent = new Intent(Login.this, Feed.class);
+            intent.putExtra("name", "Temp");
+            intent.putExtra("email","temp@temp.com");
             startActivity(intent);
         });
     }

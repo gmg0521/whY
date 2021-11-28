@@ -13,7 +13,7 @@ public class ContentAdd {
 
         int vID;
 
-        FeedCustomView nLayout = new FeedCustomView(MyApplication.ApplicationContext());
+        FeedCustomView nLayout = new FeedCustomView(KakaoManager.ApplicationContext());
 
         nLayout.setId(nLayout.generateViewId());
 
@@ -34,10 +34,12 @@ public class ContentAdd {
                     nLayout.setAlpha(0.4f);
                     break;
                 case MotionEvent.ACTION_UP:
+                    nLayout.setAlpha(1.0f);
+                    Intent intent = new Intent(KakaoManager.ApplicationContext(), Content.class);
+                    KakaoManager.ApplicationContext().startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                    break;
                 case MotionEvent.ACTION_CANCEL:
                     nLayout.setAlpha(1.0f);
-                    Intent intent = new Intent(MyApplication.ApplicationContext(), Content.class);
-                    MyApplication.ApplicationContext().startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
                     break;
             }
 
