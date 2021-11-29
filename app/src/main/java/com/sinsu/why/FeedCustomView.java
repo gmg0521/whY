@@ -1,97 +1,89 @@
 package com.sinsu.why;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.TypedArray;
 import android.util.AttributeSet;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.recyclerview.widget.RecyclerView;
 
-public class FeedCustomView extends LinearLayout {
+import java.util.ArrayList;
+import java.util.List;
 
-    ImageView profileImage;
-    TextView titleText, desText, uploadTimeText, heartCountText;
+public class FeedCustomView extends RecyclerView.Adapter<FeedCustomView.ViewHolder> {
 
-    public FeedCustomView(Context context) {
-        super(context);
-        initView();
-    }
-    public FeedCustomView(Context context, @Nullable AttributeSet attrs) {
-        super(context, attrs);
-        initView();
-        getAttrs(attrs);
-    }
+    private Context context;
+    private List<PostModel> list = new ArrayList<>();
 
-    public FeedCustomView(Context context, @Nullable AttributeSet attrs, int defStyleAttr) {
-        super(context, attrs);
-        initView();
-        getAttrs(attrs, defStyleAttr);
+    public FeedCustomView(Context context, List<PostModel> list) {
+        this.context = context;
+        this.list = list;
     }
 
-    private void initView() {
-        inflate(getContext(), R.layout.feed_custom_view, this);
 
-        profileImage = (ImageView) findViewById(R.id.feedProfileImg);
-        titleText = (TextView) findViewById(R.id.feedTitleText);
-        desText = (TextView) findViewById(R.id.feedDesText);
-        uploadTimeText = (TextView) findViewById(R.id.feedUploadTimeText);
-        heartCountText = (TextView) findViewById(R.id.feedHeartCountText);
-
+    //ViewHolder 생성
+    // row layout을 화면에 보여주고 holder에 연결
+    @NonNull
+    @Override
+    public FeedCustomView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.activity_main_feed_hot, parent, false);
+        ViewHolder holder = new ViewHolder(view);
+        return holder;
     }
 
-    private void getAttrs(AttributeSet attrs){
-        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.FeedCustomView);
-        setTypeArray(typedArray);
+    @Override
+    public void onBindViewHolder(@NonNull FeedCustomView.ViewHolder holder, int position) {
+        int itemPosition = position;
+        holder.titleText.setText(list.get(itemPosition).getTitle());
+        holder.desText.setText(list.get(itemPosition).getContents());
     }
 
-    private void getAttrs(AttributeSet attrs, int defStyleAttr) {
-        TypedArray typedArray = getContext().obtainStyledAttributes(attrs, R.styleable.FeedCustomView, defStyleAttr, 0);
-        setTypeArray(typedArray);
+    @Override
+    public int getItemCount() {
+        return list.size();
     }
 
-    private void setTypeArray(TypedArray typedArray) {
+    public class ViewHolder extends RecyclerView.ViewHolder {
 
-        int profileImgResId = typedArray.getResourceId(R.styleable.FeedCustomView_profileImg, R.drawable.ic_launcher_background);
-        profileImage.setImageResource(profileImgResId);
+        public TextView titleText;
+        public TextView desText;
 
-        String title = typedArray.getString(R.styleable.FeedCustomView_titleText);
-        titleText.setText(title);
+        public ViewHolder(@NonNull View itemView) {
+            super(itemView);
+            titleText = itemView.findViewById(R.id.feedTitleText);
+            desText = itemView.findViewById(R.id.feedDesText);
 
-        String Des = typedArray.getString(R.styleable.FeedCustomView_DesText);
-        desText.setText(Des);
+            itemView.setOnTouchListener((v, event) -> {
 
-        String uploadTime = typedArray.getString(R.styleable.FeedCustomView_upLoadTimeText);
-        uploadTimeText.setText(uploadTime);
+                int action = event.getAction();
 
-        String heartCount = typedArray.getString(R.styleable.FeedCustomView_heartCount);
-        heartCountText.setText(heartCount);
+                switch (action) {
+                    case MotionEvent.ACTION_DOWN:
+                        itemView.setAlpha(0.4f);
+                        break;
+                    case MotionEvent.ACTION_UP:
+                        itemView.setAlpha(1.0f);
+                        Intent intent = new Intent(KakaoManager.ApplicationContext(), Content.class);
+                        KakaoManager.ApplicationContext().startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+                        break;
+                    case MotionEvent.ACTION_CANCEL:
+                        itemView.setAlpha(1.0f);
+                        break;
+                }
 
-        typedArray.recycle();
+                return true;
+            });
 
+        }
     }
 
-    public void setProfileImage(int profileImage_res_id) {
-        profileImage.setImageResource(profileImage_res_id);
-    }
-
-    public void setTitleText(String title) {
-        titleText.setText(title);
-    }
-
-    public void setDesText(String des) {
-        desText.setText(des);
-    }
-
-    public void setUploadTimeText(String uploadTime) {
-        uploadTimeText.setText(uploadTime);
-    }
-
-    public void setHeartCountText(String heartCount) {
-        heartCountText.setText(heartCount);
-    }
 }

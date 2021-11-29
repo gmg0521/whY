@@ -6,9 +6,9 @@
     android:layout_height="match_parent"
     tools:context=".MainFeedHot">
 
-    <LinearLayout
+    <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/feedHotContainer"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"></LinearLayout>
+        android:orientation="vertical"></androidx.recyclerview.widget.RecyclerView>
 </ScrollView>

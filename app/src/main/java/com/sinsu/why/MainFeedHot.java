@@ -1,31 +1,31 @@
 package com.sinsu.why;
 
-import static com.sinsu.why.ContentAdd.addNewiew;
+import android.os.Bundle;
+import android.util.Log;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
-import android.widget.LinearLayout;
-import android.widget.Toast;
-
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentReference;
+import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.auth.FirebaseAuthCredentialsProvider;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.ArrayList;
 
 public class MainFeedHot extends Fragment {
 
-    LinearLayout con;
+    private RecyclerView recyclerView;
+    private FeedCustomView adapter;
+    private ArrayList<PostModel> list = new ArrayList<>();
+
+    private int collectionSize = 0;
+
     FirebaseFirestore db = FirebaseFirestore.getInstance();
 
     @Nullable
@@ -33,28 +33,30 @@ public class MainFeedHot extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         ViewGroup viewGroup = (ViewGroup) getLayoutInflater().inflate(R.layout.activity_main_feed_hot, container, false);
 
-        con = viewGroup.findViewById(R.id.feedHotContainer);
+        recyclerView = viewGroup.findViewById(R.id.feedHotContainer);
 
+        db.collection("contents").get().addOnCompleteListener(task -> {
+            if (task.isSuccessful()) {
+                collectionSize = task.getResult().size();
+            } else {
+                Log.d("MainFeedHot", "Error getting documents!", task.getException());
+            }
+        });
 
-        for (int i = 0; i < 10; i++) {
-            addNewiew(con, "TooHot", "반가워요", "now", 1024);
+        for (int i = 0; i < collectionSize; i++) {
+            DocumentReference documentReference = db.collection("contents").document("gmg0521 " + 1 + " 번 글");
+            documentReference.get().addOnSuccessListener(documentSnapshot -> {
+                PostModel postModel = documentSnapshot.toObject(PostModel.class);
+                list.add(postModel);
+            });
         }
 
-        Map<String, Object> user = new HashMap<>();
-        user.put("title", "Alan");
-        user.put("des", "Lovelace");
-        user.put("uploadTime", 1815);
-        user.put("heartCount", 1024);
+        recyclerView.setHasFixedSize(true);
+        adapter = new FeedCustomView(getActivity(), list);
+        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        recyclerView.setAdapter(adapter);
 
-        db.collection("users")
-                .add(user)
-                .addOnSuccessListener(documentReference -> {
-
-                })
-                .addOnFailureListener(e -> Toast.makeText(KakaoManager.ApplicationContext(), "글 저장 실패.", Toast.LENGTH_LONG).show());
-
-
+        Log.e("Hot", "MainHotFeed");
         return viewGroup;
     }
-
 }
