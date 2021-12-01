@@ -1,15 +1,6 @@
 package com.sinsu.why;
 
-import static android.content.ContentValues.TAG;
-
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.Fragment;
-
-import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,25 +8,22 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.DocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
-import java.util.HashMap;
-import java.util.Map;
+import com.google.firebase.database.DatabaseReference;
+import com.kakao.sdk.user.UserApiClient;
+import com.kakao.sdk.user.model.User;
+
+import kotlin.Unit;
+import kotlin.jvm.functions.Function2;
 
 public class Question extends Fragment {
 
     PostModel postModel = new PostModel();
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
+    Feed feed;
 
     ViewGroup viewGroup;
 
@@ -48,33 +36,55 @@ public class Question extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         viewGroup = (ViewGroup) inflater.inflate(R.layout.activity_question, container, false);
 
-        title = viewGroup.findViewById(R.id.questionTitle);
-        contents = viewGroup.findViewById(R.id.questionEdt);
+        feed = (Feed) getActivity();
 
-        questionUpload = viewGroup.findViewById(R.id.btnQuestionUpload);
+        title = viewGroup.findViewById(R.id.answerTitle);
+        contents = viewGroup.findViewById(R.id.answerEdt);
 
-        questionUpload.setOnClickListener(v -> {
-            String t = title.getText().toString();
-            String c = contents.getText().toString();
+        questionUpload = viewGroup.findViewById(R.id.btnAnswerUpload);
 
-            postModel.userId = "gmg0521";
-            postModel.userName = "까마귀";
-            postModel.title = t;
-            postModel.contents = c;
-            postModel.heartCount = 1024;
+        if (AppManager.getmAuth().getCurrentUser() != null){
+            postModel.setUserName((AppManager.getmAuth().getCurrentUser().getDisplayName()));
+            postModel.setUserProfileImg(AppManager.getmAuth().getCurrentUser().getPhotoUrl().toString());
+        } else {
+            UserApiClient.getInstance().me(new Function2<User, Throwable, Unit>() {
+                @Override
+                public Unit invoke(User user, Throwable throwable) {
+                    if (user != null){
+                        postModel.setUserName(user.getKakaoAccount().getProfile().getNickname());
+                        postModel.setUserProfileImg(user.getKakaoAccount().getProfile().getProfileImageUrl());
+                    } else {
+                        postModel.setUserName("박예섬");
+                        postModel.setUserProfileImg("https://k.kakaocdn.net/dn/Tjz3p/btrmzKVixR9/UdvCai3hV7jKVKwk5B4Cs1/img_640x640.jpg");
+                    }
+                    return null;
+                }
+            });
+        }
 
-            db.collection("contents")
-                    .document(postModel.userId +" " + 1 + " 번 글")
-                    .set(postModel)
-                    .addOnSuccessListener(unused -> {
-                        Toast.makeText(KakaoManager.ApplicationContext(), "글을 등록하였습니다!", Toast.LENGTH_LONG).show();
-                        Intent intent = new Intent(KakaoManager.ApplicationContext(), Content.class);
-                        startActivity(intent);
-                    })
-                    .addOnFailureListener(e -> Toast.makeText(KakaoManager.ApplicationContext(), "오류가 발생하였습니다", Toast.LENGTH_SHORT).show());
-
-        });
+        questionUpload.setOnClickListener(v -> Upload());
 
         return viewGroup;
+    }
+
+    private void Upload() {
+
+        String t = title.getText().toString();
+        String c = contents.getText().toString();
+
+        postModel.setTitle(t);
+        postModel.setContent(c);
+        postModel.setHeartCount(0);
+
+        DatabaseReference databaseReference = AppManager.getDatabase().getReference("User")
+                .child(AppManager.getCurrentUserName())
+                .child("contents").child(postModel.getTitle());
+
+        databaseReference.setValue(postModel);
+
+        Toast.makeText(AppManager.ApplicationContext(), "글을 저장하였습니다", Toast.LENGTH_SHORT).show();
+
+        feed.getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, new MainFeed()).commit();
+        feed.bottomNavigationView.setSelectedItemId(R.id.navigation_feed);
     }
 }

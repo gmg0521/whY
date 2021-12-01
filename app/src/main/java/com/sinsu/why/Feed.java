@@ -3,17 +3,29 @@ package com.sinsu.why;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.View;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.auth.api.Auth;
+import com.google.android.gms.auth.api.signin.GoogleSignIn;
+import com.google.android.gms.auth.api.signin.GoogleSignInApi;
+import com.google.android.gms.auth.api.signin.GoogleSignInClient;
+import com.google.android.gms.common.api.GoogleApi;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.auth.FirebaseAuth;
 import com.kakao.sdk.user.UserApiClient;
 
-public class Feed extends AppCompatActivity {
+public class Feed extends AppCompatActivity implements View.OnClickListener {
 
     String strNickname, strEmail;
 
@@ -23,7 +35,7 @@ public class Feed extends AppCompatActivity {
     private Yditor yditor = new Yditor();
     private MyPage myPage = new MyPage();
 
-    private BottomNavigationView bottomNavigationView;
+    public BottomNavigationView bottomNavigationView;
 
     @SuppressLint({"ResourceType", "WrongViewCast"})
     @Override
@@ -66,19 +78,34 @@ public class Feed extends AppCompatActivity {
             return true;
         });
 
-        findViewById(R.id.feedFaqButton).setOnClickListener(v -> UserApiClient.getInstance().unlink(throwable -> {
-            Toast.makeText(getApplicationContext(), "로그아웃 하였습니다!", Toast.LENGTH_SHORT).show();
-            Intent backMain = new Intent(getApplicationContext(), MainActivity.class);
-            startActivity(backMain);
-            return null;
-        }));
+        findViewById(R.id.feedFaqButton).setOnClickListener(this);
 
+    }
+
+    private void revokeAccess() {
+        UserApiClient.getInstance().unlink(throwable -> {
+            return null;
+        });
+        FirebaseAuth.getInstance().signOut();
+        AppManager.googleSignInClient.revokeAccess();
+        Toast.makeText(AppManager.ApplicationContext(), "로그아웃 하였습니다.", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-        Toast.makeText(KakaoManager.ApplicationContext(), "로그아웃 하였습니다.", Toast.LENGTH_SHORT).show();
+    }
 
+    @Override
+    public void onClick(View v) {
+        switch (v.getId()) {
+            case R.id.feedFaqButton:
+                revokeAccess();
+                AppManager.setLogined(false);
+                finishAffinity();
+                Intent backMain = new Intent(getApplicationContext(), MainActivity.class);
+                startActivity(backMain);
+                break;
+        }
     }
 }

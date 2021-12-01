@@ -4,9 +4,11 @@
     package="com.sinsu.why">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
 
     <application
-        android:name=".KakaoManager"
+        android:name=".AppManager"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
@@ -14,6 +16,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.WhY">
+        <activity
+            android:name=".Answer"
+            android:exported="false" />
         <activity
             android:name=".Content"
             android:exported="false" />

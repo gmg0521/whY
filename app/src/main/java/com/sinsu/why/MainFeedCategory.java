@@ -14,8 +14,11 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.firebase.firestore.DocumentReference;
-import com.google.firebase.firestore.FirebaseFirestore;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
 
@@ -23,13 +26,13 @@ public class MainFeedCategory extends Fragment {
 
     Spinner spinner;
 
-    FirebaseFirestore db = FirebaseFirestore.getInstance();
-
-    private int collectionSize = 0;
     private RecyclerView recyclerView;
-    private ArrayList<PostModel> list = new ArrayList<>();
+    private RecyclerView.Adapter adapter;
+    private ArrayList<PostModel> list;
+    private RecyclerView.LayoutManager layoutManager;
 
-    private FeedCustomView adapter;
+    private FirebaseDatabase db;
+    private DatabaseReference databaseReference;
 
     @Nullable
     @Override
@@ -39,7 +42,7 @@ public class MainFeedCategory extends Fragment {
         spinner = viewGroup.findViewById(R.id.categorySpinner);
         String[] item = getResources().getStringArray(R.array.category);
 
-        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(KakaoManager.ApplicationContext(),
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(AppManager.ApplicationContext(),
                 android.R.layout.simple_spinner_item,
                 item);
 
@@ -47,25 +50,33 @@ public class MainFeedCategory extends Fragment {
 
         recyclerView = viewGroup.findViewById(R.id.feedCategoryContainer);
 
-        db.collection("contents").get().addOnCompleteListener(task -> {
-            if (task.isSuccessful()) {
-                collectionSize = task.getResult().size();
-            } else {
-                Log.d("MainFeedHot", "Error getting documents!", task.getException());
+        recyclerView.setHasFixedSize(true);
+        layoutManager = new LinearLayoutManager(viewGroup.getContext());
+        recyclerView.setLayoutManager(layoutManager);
+
+        list = new ArrayList<>();
+
+        db = FirebaseDatabase.getInstance("https://swproject-309605-default-rtdb.asia-southeast1.firebasedatabase.app/");
+
+        databaseReference = db.getReference("User").child("gmg0521").child("contents");
+        databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                list.clear();
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                    PostModel postModel = snapshot.getValue(PostModel.class);
+                    list.add(postModel);
+                }
+                adapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onCancelled(@NonNull DatabaseError databaseError) {
+
             }
         });
 
-        for (int i = 0; i < collectionSize; i++) {
-            DocumentReference documentReference = db.collection("contents").document("gmg0521 " + 1 + " 번 글");
-            documentReference.get().addOnSuccessListener(documentSnapshot -> {
-                PostModel postModel = documentSnapshot.toObject(PostModel.class);
-                list.add(postModel);
-            });
-        }
-
-        recyclerView.setHasFixedSize(true);
-        adapter = new FeedCustomView(getActivity(), list);
-        recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        adapter = new FeedCustomView(viewGroup.getContext(), list);
         recyclerView.setAdapter(adapter);
 
         Log.e("Hot", "MainCategoryFeed");

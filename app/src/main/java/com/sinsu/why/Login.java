@@ -22,6 +22,7 @@ public class Login extends AppCompatActivity {
             intent.putExtra("name", "Temp");
             intent.putExtra("email","temp@temp.com");
             startActivity(intent);
+            finish();
         });
     }
 }

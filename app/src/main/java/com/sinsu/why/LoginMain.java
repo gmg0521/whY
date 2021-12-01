@@ -22,11 +22,13 @@ public class LoginMain extends AppCompatActivity {
         btnLogin.setOnClickListener(v -> {
             intent = new Intent(LoginMain.this, Login.class);
             startActivity(intent);
+            finish();
         });
 
         btnCA.setOnClickListener(v -> {
             intent = new Intent(LoginMain.this, CreateAccount.class);
             startActivity(intent);
+            finish();
         });
     }
 

@@ -7,6 +7,24 @@
     android:background="#34495e"
     tools:context=".Question">
 
+    <LinearLayout
+        android:id="@+id/layoutAnswerQuestion"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="16dp"
+        android:orientation="vertical"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <TextView
+            android:id="@+id/tvAnswerQuestion"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:hint="여기에 질문이 보입니다," />
+    </LinearLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -16,32 +34,8 @@
         android:layout_marginBottom="16dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintVertical_bias="0.0">
-
-        <LinearLayout
-            android:id="@+id/linearLayout3"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="#666666"
-            android:orientation="horizontal"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
-            <EditText
-                android:id="@+id/answerTitle"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:ems="10"
-                android:hint="당신의 질문은 무엇인가요?"
-                android:inputType="textPersonName"
-                android:textAlignment="center"
-                android:textColor="@color/white" />
-        </LinearLayout>
+        app:layout_constraintTop_toBottomOf="@id/layoutAnswerQuestion">
 
         <FrameLayout
             android:id="@+id/frameLayout2"
@@ -53,7 +47,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="1.0"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
+            app:layout_constraintTop_toTopOf="parent">
 
             <EditText
                 android:id="@+id/answerEdt"
@@ -61,7 +55,7 @@
                 android:layout_height="match_parent"
                 android:ems="10"
                 android:gravity="center_horizontal"
-                android:hint="질문하기"
+                android:hint="의견을 남겨주세요."
                 android:inputType="textMultiLine"
                 android:textColor="@color/white"
                 android:textColorHint="#595959" />
@@ -78,23 +72,9 @@
             app:layout_constraintStart_toStartOf="parent">
 
             <Button
-                android:id="@+id/button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="내 질문 목록"
-                android:textSize="14sp" />
-
-            <Space
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_weight="1" />
-
-            <Button
                 android:id="@+id/btnAnswerUpload"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:backgroundTint="#27ae60"
                 android:text="등록하기" />
         </LinearLayout>
