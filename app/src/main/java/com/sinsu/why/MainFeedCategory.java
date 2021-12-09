@@ -1,10 +1,10 @@
 package com.sinsu.why;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
 
@@ -56,14 +56,12 @@ public class MainFeedCategory extends Fragment {
 
         list = new ArrayList<>();
 
-        db = FirebaseDatabase.getInstance("https://swproject-309605-default-rtdb.asia-southeast1.firebasedatabase.app/");
-
-        databaseReference = db.getReference("User").child("gmg0521").child("contents");
+        databaseReference = AppManager.getDatabase().getReference("Contents")
+                .child("Content");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                list.clear();
-                for (DataSnapshot snapshot : dataSnapshot.getChildren()){
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     PostModel postModel = snapshot.getValue(PostModel.class);
                     list.add(postModel);
                 }
@@ -79,7 +77,6 @@ public class MainFeedCategory extends Fragment {
         adapter = new FeedCustomView(viewGroup.getContext(), list);
         recyclerView.setAdapter(adapter);
 
-        Log.e("Hot", "MainCategoryFeed");
         return viewGroup;
     }
 }

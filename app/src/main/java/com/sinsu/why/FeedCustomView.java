@@ -14,7 +14,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.google.firebase.auth.FirebaseAuth;
 
 import java.util.List;
 
@@ -80,13 +79,13 @@ public class FeedCustomView extends RecyclerView.Adapter<FeedCustomView.ViewHold
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            postView = itemView.findViewById(R.id.postView);
+            postView = itemView.findViewById(R.id.commentView);
 
             titleText = itemView.findViewById(R.id.feedTitleText);
-            contentText = itemView.findViewById(R.id.feedContentText);
-            userProfileImgView = itemView.findViewById(R.id.feedProfileImg);
+            contentText = itemView.findViewById(R.id.commentContentText);
+            userProfileImgView = itemView.findViewById(R.id.commentProfileImg);
 
-            userNameDes = itemView.findViewById(R.id.feedHeartImg);
+            userNameDes = itemView.findViewById(R.id.commentHeartImg);
 
             postView.setOnTouchListener((v, event) -> {
 

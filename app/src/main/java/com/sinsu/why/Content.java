@@ -26,8 +26,6 @@ public class Content extends AppCompatActivity {
     private static final String TAG = "CONTENT";
     DatabaseReference databaseReference;
 
-    PostModel postModel = new PostModel();
-
     TextView contentTitle, contentDes;
 
     Button btnContentComments, btnContentAnswer;
@@ -49,7 +47,7 @@ public class Content extends AppCompatActivity {
         btnContentAnswer = findViewById(R.id.btnContentAnswer);
         btnContentComments = findViewById(R.id.btnContentComments);
 
-        databaseReference = AppManager.getDatabase().getReference("User").child(userName).child("contents").child(title);
+        databaseReference = AppManager.getDatabase().getReference("Contents").child("Content").child(title);
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
@@ -65,6 +63,12 @@ public class Content extends AppCompatActivity {
 
         btnContentAnswer.setOnClickListener(v -> {
             Intent intent1 = new Intent(Content.this, Answer.class);
+            intent1.putExtra("title", title);
+            startActivity(intent1);
+        });
+
+        btnContentComments.setOnClickListener(v -> {
+            Intent intent1 = new Intent(Content.this, Comment.class);
             intent1.putExtra("title", title);
             startActivity(intent1);
         });

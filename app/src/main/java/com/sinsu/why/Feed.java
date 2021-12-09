@@ -23,11 +23,12 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DatabaseReference;
 import com.kakao.sdk.user.UserApiClient;
 
 public class Feed extends AppCompatActivity implements View.OnClickListener {
 
-    String strNickname, strEmail;
+    String strNickname;
 
     private FragmentManager fragmentManager = getSupportFragmentManager();
     private MainFeed mainFeed = new MainFeed();
@@ -45,13 +46,10 @@ public class Feed extends AppCompatActivity implements View.OnClickListener {
 
         Intent intent = getIntent();
         strNickname = intent.getStringExtra("name");
-        strEmail = intent.getStringExtra("email");
 
         TextView kakaoNickname = findViewById(R.id.kakaoNick);
-        TextView kakaoEmail = findViewById(R.id.kakaoEmail);
         
         kakaoNickname.setText(strNickname);
-        kakaoEmail.setText(strEmail);
 
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
 
@@ -88,6 +86,8 @@ public class Feed extends AppCompatActivity implements View.OnClickListener {
         });
         FirebaseAuth.getInstance().signOut();
         AppManager.googleSignInClient.revokeAccess();
+        DatabaseReference db = AppManager.getDatabase().getReference("User").child(AppManager.getCurrentUserName());
+        db.removeValue();
         Toast.makeText(AppManager.ApplicationContext(), "로그아웃 하였습니다.", Toast.LENGTH_SHORT).show();
     }
 

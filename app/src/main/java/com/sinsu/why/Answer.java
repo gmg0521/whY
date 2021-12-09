@@ -2,14 +2,16 @@ package com.sinsu.why;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -25,6 +27,8 @@ public class Answer extends AppCompatActivity {
 
     DatabaseReference databaseReference;
 
+    String userProfileImg;
+
     int commentId;
 
     @Override
@@ -36,10 +40,10 @@ public class Answer extends AppCompatActivity {
         String title = intent.getStringExtra("title");
 
         tvAnswerQuestion = findViewById(R.id.tvAnswerQuestion);
-        answerEdt = findViewById(R.id.answerEdt);
+        answerEdt = (EditText) findViewById(R.id.answerEditText);
         btnAnswerUpload = findViewById(R.id.btnAnswerUpload);
 
-        databaseReference = AppManager.getDatabase().getReference("User").child(AppManager.getCurrentUserName()).child("comments").child(title);
+        databaseReference = AppManager.getDatabase().getReference("Contents").child("Content").child(title).child("Comment");
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
@@ -53,9 +57,29 @@ public class Answer extends AppCompatActivity {
             }
         });
 
-
         btnAnswerUpload.setOnClickListener(v -> {
-            databaseReference.child(String.valueOf(commentId)).setValue(answerEdt.getText().toString());
+            CommentModel comment = new CommentModel();
+            comment.setUserName(AppManager.getCurrentUserName());
+            comment.setComment(answerEdt.getText().toString());
+
+            DatabaseReference mDb = AppManager.getDatabase().getReference("User")
+                    .child(AppManager.getCurrentUserName())
+                    .child("userProfileImg");
+            mDb.get().addOnCompleteListener(task -> {
+                if (!task.isSuccessful())
+                    Toast.makeText(getApplicationContext(), "사용자 이미지를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
+                else
+                    userProfileImg = task.getResult().getValue().toString();
+            });
+
+            comment.setUserProfileImg(userProfileImg);
+
+            databaseReference = AppManager.getDatabase().getReference("Contents")
+                    .child("Content").child(title).child("Comment");
+
+            databaseReference.child(String.valueOf(commentId)).setValue(comment);
+            onBackPressed();
+            Toast.makeText(AppManager.ApplicationContext(), "답변이 등록 되었습니다!", Toast.LENGTH_SHORT).show();
         });
 
     }

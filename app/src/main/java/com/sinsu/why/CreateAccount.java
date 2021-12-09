@@ -2,7 +2,6 @@ package com.sinsu.why;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.Button;
 import android.widget.Toast;
 
@@ -12,8 +11,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.gms.auth.api.signin.GoogleSignIn;
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount;
-import com.google.android.gms.auth.api.signin.GoogleSignInClient;
-import com.google.android.gms.auth.api.signin.GoogleSignInOptions;
 import com.google.android.gms.common.SignInButton;
 import com.google.android.gms.common.api.ApiException;
 import com.google.android.gms.tasks.OnCompleteListener;
@@ -21,15 +18,15 @@ import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.AuthCredential;
 import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.GoogleAuthProvider;
+import com.google.firebase.database.DatabaseReference;
 import com.kakao.sdk.auth.model.OAuthToken;
+import com.kakao.sdk.common.KakaoSdk;
 import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.user.model.User;
 
 import kotlin.Unit;
-import kotlin.jvm.functions.Function1;
 import kotlin.jvm.functions.Function2;
 
 public class CreateAccount extends AppCompatActivity {
@@ -41,51 +38,22 @@ public class CreateAccount extends AppCompatActivity {
     
     Button btnCABack, btnCACreate;
 
-    //카카오 로그인
-    private Function2<OAuthToken, Throwable, Unit> addCallback = new Function2<OAuthToken, Throwable, Unit>() {
-        @Override
-        public Unit invoke(OAuthToken oAuthToken, Throwable throwable) {
-            if (oAuthToken != null) {
-                kakaoLogin();
-            }
-            if (throwable != null) {
-                Toast.makeText(getApplicationContext(), "로그인에 실패하였습니다... 다시 시도해주세요", Toast.LENGTH_SHORT).show();
-            }
-            return null;
-        }
-    };
-
-    private void kakaoLogin() {
-        Toast.makeText(getApplicationContext(), "환영합니다!", Toast.LENGTH_SHORT).show();
-        UserApiClient.getInstance().me((user, throwable1) -> {
-            if (user != null){
-                AppManager.setCurrentUserName(user.getKakaoAccount().getProfile().getNickname());
-
-                Intent intent = new Intent(getApplicationContext(), Feed.class);
-                intent.putExtra("name", AppManager.getCurrentUserName());
-                intent.putExtra("email", user.getKakaoAccount().getEmail());
-                startActivity(intent);
-                finish();
-            } else {
-              if (throwable1 != null){
-                  Toast.makeText(CreateAccount.this, "사옹자 정보를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
-              }
-            }
-            return null;
-        });
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_create_account);
 
         if (AppManager.getmAuth().getCurrentUser() != null) {
-            Intent intent = new Intent(getApplication(), Feed.class);
-            intent.putExtra("name", AppManager.getmAuth().getCurrentUser().getDisplayName());
-            intent.putExtra("email", AppManager.getmAuth().getCurrentUser().getEmail());
-            startActivity(intent);
-            finish();
+            login(AppManager.getmAuth().getCurrentUser(), null);
+        } else {
+            UserApiClient.getInstance().me(new Function2<User, Throwable, Unit>() {
+                @Override
+                public Unit invoke(User user, Throwable throwable) {
+                    if (user != null)
+                        login(null , user);
+                    return null;
+                }
+            });
         }
         
         btnKakaoLogin = (Button) findViewById(R.id.btnKakaoReg);
@@ -113,6 +81,34 @@ public class CreateAccount extends AppCompatActivity {
             finish();
         });
 
+    }
+
+    //카카오 로그인
+    private Function2<OAuthToken, Throwable, Unit> addCallback = new Function2<OAuthToken, Throwable, Unit>() {
+        @Override
+        public Unit invoke(OAuthToken oAuthToken, Throwable throwable) {
+            if (oAuthToken != null) {
+                kakaoLogin();
+            }
+            if (throwable != null) {
+                Toast.makeText(getApplicationContext(), "로그인에 실패하였습니다... 다시 시도해주세요", Toast.LENGTH_SHORT).show();
+            }
+            return null;
+        }
+    };
+
+    private void kakaoLogin() {
+        Toast.makeText(getApplicationContext(), "환영합니다!", Toast.LENGTH_SHORT).show();
+        UserApiClient.getInstance().me((user, throwable1) -> {
+            if (user != null){
+                login(null, user);
+            } else {
+                if (throwable1 != null){
+                    Toast.makeText(CreateAccount.this, "사옹자 정보를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
+                }
+            }
+            return null;
+        });
     }
 
     private void googleLogin() {
@@ -158,13 +154,34 @@ public class CreateAccount extends AppCompatActivity {
 
     private void updateUI(FirebaseUser user) {
         if (user != null){
-            AppManager.setCurrentUserName(user.getDisplayName());
-
-            Intent intent = new Intent(getApplication(), Feed.class);
-            intent.putExtra("name", AppManager.getCurrentUserName());
-            intent.putExtra("email", AppManager.getmAuth().getCurrentUser().getEmail());
-            startActivity(intent);
-            finish();
+            login(user, null);
         }
+    }
+
+    void login(@Nullable FirebaseUser googleUser, @Nullable User kakaoUser){
+
+        UserModel user = new UserModel();
+
+        if (googleUser != null) {
+            user.setUserName(googleUser.getDisplayName());
+            user.setUserEmail(googleUser.getEmail());
+            user.setUserProfileImg(googleUser.getPhotoUrl().toString());
+
+            AppManager.setCurrentUserName(googleUser.getDisplayName());
+        } else if (kakaoUser != null) {
+            user.setUserName(kakaoUser.getKakaoAccount().getProfile().getNickname());
+            user.setUserEmail(kakaoUser.getKakaoAccount().getEmail());
+            user.setUserProfileImg(kakaoUser.getKakaoAccount().getProfile().getProfileImageUrl());
+
+            AppManager.setCurrentUserName(kakaoUser.getKakaoAccount().getProfile().getNickname());
+        }
+
+        DatabaseReference db = AppManager.getDatabase().getReference("User").child(AppManager.getCurrentUserName());
+        db.setValue(user);
+
+        Intent intent = new Intent(getApplication(), Feed.class);
+        intent.putExtra("name", AppManager.getCurrentUserName());
+        startActivity(intent);
+        finish();
     }
 }

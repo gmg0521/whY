@@ -3,14 +3,12 @@ package com.sinsu.why;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.firebase.auth.FirebaseAuth;
-import com.kakao.sdk.common.util.Utility;
 import com.kakao.sdk.user.UserApiClient;
 
 public class MainActivity extends AppCompatActivity {

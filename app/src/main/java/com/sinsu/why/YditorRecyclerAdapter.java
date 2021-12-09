@@ -9,14 +9,13 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 
 import java.util.ArrayList;
 
-public class YditorRecylerAdapter extends RecyclerView.Adapter<YditorRecylerAdapter.ViewHolder> {
+public class YditorRecyclerAdapter extends RecyclerView.Adapter<YditorRecyclerAdapter.ViewHolder> {
 
     private ArrayList<YditorPostModel> mData;
 
@@ -38,24 +37,24 @@ public class YditorRecylerAdapter extends RecyclerView.Adapter<YditorRecylerAdap
 
     }
 
-    YditorRecylerAdapter(ArrayList<YditorPostModel> list){
+    YditorRecyclerAdapter(ArrayList<YditorPostModel> list){
         mData = list;
     }
 
     @NonNull
     @Override
-    public YditorRecylerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+    public YditorRecyclerAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Context context = parent.getContext();
         LayoutInflater inflater = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         View view = inflater.inflate(R.layout.yditor_item, parent, false);
-        YditorRecylerAdapter.ViewHolder vh = new YditorRecylerAdapter.ViewHolder(view);
+        YditorRecyclerAdapter.ViewHolder vh = new YditorRecyclerAdapter.ViewHolder(view);
 
         return vh;
     }
 
     @Override
-    public void onBindViewHolder(@NonNull YditorRecylerAdapter.ViewHolder holder, int position) {
+    public void onBindViewHolder(@NonNull YditorRecyclerAdapter.ViewHolder holder, int position) {
         String imgRes = mData.get(position).imgRes;
         String title = mData.get(position).title;
         String name = mData.get(position).name;

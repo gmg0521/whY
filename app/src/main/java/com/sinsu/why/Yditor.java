@@ -2,7 +2,6 @@ package com.sinsu.why;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -45,7 +44,7 @@ public class Yditor extends Fragment {
             yditorPostModels.add(yditorPostModel);
         }
 
-        adapter = new YditorRecylerAdapter(yditorPostModels);
+        adapter = new YditorRecyclerAdapter(yditorPostModels);
         recyclerView.setAdapter(adapter);
 
         return viewGroup;

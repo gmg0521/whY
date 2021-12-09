@@ -38,8 +38,8 @@ public class Question extends Fragment {
 
         feed = (Feed) getActivity();
 
-        title = viewGroup.findViewById(R.id.answerTitle);
-        contents = viewGroup.findViewById(R.id.answerEdt);
+        title = viewGroup.findViewById(R.id.questionTitle);
+        contents = viewGroup.findViewById(R.id.questionEdt);
 
         questionUpload = viewGroup.findViewById(R.id.btnAnswerUpload);
 
@@ -76,11 +76,14 @@ public class Question extends Fragment {
         postModel.setContent(c);
         postModel.setHeartCount(0);
 
-        DatabaseReference databaseReference = AppManager.getDatabase().getReference("User")
-                .child(AppManager.getCurrentUserName())
-                .child("contents").child(postModel.getTitle());
+        DatabaseReference databaseReference = AppManager.getDatabase().getReference("Contents")
+                .child("Content")
+                .child(postModel.getTitle());
 
         databaseReference.setValue(postModel);
+
+        databaseReference = databaseReference.child("Comments");
+
 
         Toast.makeText(AppManager.ApplicationContext(), "글을 저장하였습니다", Toast.LENGTH_SHORT).show();
 

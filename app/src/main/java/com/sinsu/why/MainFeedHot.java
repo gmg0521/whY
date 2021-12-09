@@ -1,7 +1,6 @@
 package com.sinsu.why;
 
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -15,16 +14,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
-import com.kakao.sdk.user.UserApiClient;
-import com.kakao.sdk.user.model.User;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
-
-import kotlin.Unit;
-import kotlin.jvm.functions.Function2;
 
 public class MainFeedHot extends Fragment {
 
@@ -47,39 +39,20 @@ public class MainFeedHot extends Fragment {
 
         list = new ArrayList<>();
 
-        databaseReference = AppManager.getDatabase().getReference("User");
-
-        ArrayList<String> userList = new ArrayList<>();
-
+        databaseReference = AppManager.getDatabase().getReference("Contents")
+                .child("Content");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
-            public void onDataChange(@NonNull DataSnapshot UserList) {
-                for (DataSnapshot user: UserList.getChildren()) {
-                    userList.add(user.getKey());
+            public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
+                for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
+                    PostModel postModel = snapshot.getValue(PostModel.class);
+                    list.add(postModel);
                 }
-                list.clear();
-                for (String user : userList) {
-                    databaseReference = databaseReference.child(user).child("contents");
-                    databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
-                        @Override
-                        public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
-                            for (DataSnapshot snapshot : dataSnapshot.getChildren()){
-                                PostModel postModel = snapshot.getValue(PostModel.class);
-                                list.add(postModel);
-                            }
-                            adapter.notifyDataSetChanged();
-                        }
-
-                        @Override
-                        public void onCancelled(@NonNull DatabaseError databaseError) {
-
-                        }
-                    });
-                }
+                adapter.notifyDataSetChanged();
             }
 
             @Override
-            public void onCancelled(@NonNull DatabaseError error) {
+            public void onCancelled(@NonNull DatabaseError databaseError) {
 
             }
         });
@@ -87,7 +60,6 @@ public class MainFeedHot extends Fragment {
         adapter = new FeedCustomView(viewGroup.getContext(), list);
         recyclerView.setAdapter(adapter);
 
-        Log.e("Hot", "MainHotFeed");
         return viewGroup;
     }
 }

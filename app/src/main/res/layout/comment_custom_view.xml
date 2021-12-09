@@ -23,20 +23,11 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/feedTitleText"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:text="아니요"
-            android:textColor="@color/white"
-            android:textSize="20sp" />
-
-        <TextView
             android:id="@+id/commentContentText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="있떠영..."
-            android:textColor="#B96C6C6C" />
-
+            android:textColor="#7E7E7E" />
     </LinearLayout>
 
     <LinearLayout
@@ -72,7 +63,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:text="1024"
+                android:text="0"
                 android:textAlignment="textEnd" />
         </LinearLayout>
     </LinearLayout>
