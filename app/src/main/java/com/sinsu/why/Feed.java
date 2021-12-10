@@ -26,7 +26,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.kakao.sdk.user.UserApiClient;
 
-public class Feed extends AppCompatActivity implements View.OnClickListener {
+public class Feed extends AppCompatActivity {
 
     String strNickname;
 
@@ -44,8 +44,14 @@ public class Feed extends AppCompatActivity implements View.OnClickListener {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_feed);
 
+        findViewById(R.id.feedFaqButton).setOnClickListener(v -> {
+            Intent intent = new Intent(getApplicationContext(), FAQ.class);
+            startActivity(intent);
+        });
+
         Intent intent = getIntent();
         strNickname = intent.getStringExtra("name");
+        Boolean editable = intent.getBooleanExtra("edit", false);
 
         TextView kakaoNickname = findViewById(R.id.kakaoNick);
         
@@ -53,8 +59,13 @@ public class Feed extends AppCompatActivity implements View.OnClickListener {
 
         bottomNavigationView = findViewById(R.id.bottom_navigation_view);
 
-        getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, mainFeed).commit();
-        bottomNavigationView.setSelectedItemId(R.id.navigation_feed);
+        if (editable) {
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, question).commit();
+            bottomNavigationView.setSelectedItemId(R.id.navigation_question);
+        } else {
+            getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, mainFeed).commit();
+            bottomNavigationView.setSelectedItemId(R.id.navigation_feed);
+        }
 
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
             FragmentTransaction transaction =fragmentManager.beginTransaction();
@@ -76,36 +87,10 @@ public class Feed extends AppCompatActivity implements View.OnClickListener {
             return true;
         });
 
-        findViewById(R.id.feedFaqButton).setOnClickListener(this);
-
-    }
-
-    private void revokeAccess() {
-        UserApiClient.getInstance().unlink(throwable -> {
-            return null;
-        });
-        FirebaseAuth.getInstance().signOut();
-        AppManager.googleSignInClient.revokeAccess();
-        DatabaseReference db = AppManager.getDatabase().getReference("User").child(AppManager.getCurrentUserName());
-        db.removeValue();
-        Toast.makeText(AppManager.ApplicationContext(), "로그아웃 하였습니다.", Toast.LENGTH_SHORT).show();
     }
 
     @Override
     public void onBackPressed() {
         super.onBackPressed();
-    }
-
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.feedFaqButton:
-                revokeAccess();
-                AppManager.setLogined(false);
-                finishAffinity();
-                Intent backMain = new Intent(getApplicationContext(), MainActivity.class);
-                startActivity(backMain);
-                break;
-        }
     }
 }

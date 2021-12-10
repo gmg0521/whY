@@ -1,5 +1,6 @@
 package com.sinsu.why;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.user.model.User;
@@ -38,10 +40,17 @@ public class Question extends Fragment {
 
         feed = (Feed) getActivity();
 
+        Intent intent = feed.getIntent();
+
         title = viewGroup.findViewById(R.id.questionTitle);
         contents = viewGroup.findViewById(R.id.questionEdt);
 
         questionUpload = viewGroup.findViewById(R.id.btnAnswerUpload);
+
+        if (intent.getBooleanExtra("edit", false)){
+            title.setText(intent.getStringExtra("title"));
+            contents.setText(intent.getStringExtra("content"));
+        }
 
         if (AppManager.getmAuth().getCurrentUser() != null){
             postModel.setUserName((AppManager.getmAuth().getCurrentUser().getDisplayName()));
@@ -81,8 +90,6 @@ public class Question extends Fragment {
                 .child(postModel.getTitle());
 
         databaseReference.setValue(postModel);
-
-        databaseReference = databaseReference.child("Comments");
 
 
         Toast.makeText(AppManager.ApplicationContext(), "글을 저장하였습니다", Toast.LENGTH_SHORT).show();

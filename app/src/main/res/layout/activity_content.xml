@@ -65,6 +65,13 @@
                 android:textAlignment="center"
                 android:textColor="@color/white"
                 android:textSize="24sp" />
+
+            <ImageButton
+                android:id="@+id/contentHeart"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:background="@null"
+                app:srcCompat="@android:drawable/btn_star" />
         </LinearLayout>
 
         <FrameLayout
@@ -72,7 +79,7 @@
             android:layout_width="match_parent"
             android:layout_height="0dp"
             android:background="#404040"
-            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintBottom_toTopOf="@+id/contentUserLayout"
             app:layout_constraintTop_toBottomOf="@+id/linearLayout3">
 
             <TextView
@@ -84,7 +91,35 @@
                 android:gravity="center"
                 android:text="내용이 보입니다."
                 android:textColor="@color/white" />
+
         </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/contentUserLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent">
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnContentEdit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="@color/white"
+                android:text="수정하기" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btnContentDel"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:background="#D64343"
+                android:text="삭제하기" />
+
+        </LinearLayout>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 

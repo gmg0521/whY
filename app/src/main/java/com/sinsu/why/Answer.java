@@ -29,7 +29,7 @@ public class Answer extends AppCompatActivity {
 
     String userProfileImg;
 
-    int commentId;
+    String commentId;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -43,12 +43,12 @@ public class Answer extends AppCompatActivity {
         answerEdt = (EditText) findViewById(R.id.answerEditText);
         btnAnswerUpload = findViewById(R.id.btnAnswerUpload);
 
-        databaseReference = AppManager.getDatabase().getReference("Contents").child("Content").child(title).child("Comment");
+        databaseReference = AppManager.getDatabase().getReference("Contents").child("Content").child(title).child("Comments");
 
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
-                commentId = (int) snapshot.getChildrenCount();
+                commentId = String.valueOf(snapshot.getChildrenCount());
             }
 
             @Override
@@ -61,6 +61,7 @@ public class Answer extends AppCompatActivity {
             CommentModel comment = new CommentModel();
             comment.setUserName(AppManager.getCurrentUserName());
             comment.setComment(answerEdt.getText().toString());
+            comment.setCommentID(commentId);
 
             DatabaseReference mDb = AppManager.getDatabase().getReference("User")
                     .child(AppManager.getCurrentUserName())
@@ -75,9 +76,9 @@ public class Answer extends AppCompatActivity {
             comment.setUserProfileImg(userProfileImg);
 
             databaseReference = AppManager.getDatabase().getReference("Contents")
-                    .child("Content").child(title).child("Comment");
+                    .child("Content").child(title).child("Comments");
 
-            databaseReference.child(String.valueOf(commentId)).setValue(comment);
+            databaseReference.child(commentId).setValue(comment);
             onBackPressed();
             Toast.makeText(AppManager.ApplicationContext(), "답변이 등록 되었습니다!", Toast.LENGTH_SHORT).show();
         });

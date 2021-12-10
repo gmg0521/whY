@@ -2,16 +2,7 @@ package com.sinsu.why;
 
 public class PostModel {
 
-    public String contentId;
     public String title;
-
-    public String getContentId() {
-        return contentId;
-    }
-
-    public void setContentId(String contentId) {
-        this.contentId = contentId;
-    }
 
     public String content;
     public String userName;
@@ -61,4 +52,5 @@ public class PostModel {
     public int getHeartCount() {
         return heartCount;
     }
+
 }

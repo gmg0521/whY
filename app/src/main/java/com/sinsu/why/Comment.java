@@ -26,13 +26,15 @@ public class Comment extends AppCompatActivity {
 
     private DatabaseReference databaseReference;
 
+    public static String title;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_comment);
 
         Intent intent = getIntent();
-        String title = intent.getStringExtra("title");
+        title = intent.getStringExtra("title");
 
         recyclerView = findViewById(R.id.commentRecyclerView);
         recyclerView.setHasFixedSize(true);
@@ -44,13 +46,21 @@ public class Comment extends AppCompatActivity {
         databaseReference = AppManager.getDatabase().getReference("Contents")
                 .child("Content")
                 .child(title)
-                .child("Comment");
+                .child("Comments");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
                     CommentModel commentModel = dataSnapshot.getValue(CommentModel.class);
                     list.add(commentModel);
+                }
+                if (list.size() == 0) {
+                    CommentModel nomodel = new CommentModel();
+                    nomodel.setUserProfileImg(null);
+                    nomodel.setComment("아직 답변이 없어요ㅜㅜ");
+                    nomodel.setUserName("");
+                    nomodel.setCommentID(null);
+                    list.add(nomodel);
                 }
                 adapter.notifyDataSetChanged();
             }
@@ -61,7 +71,7 @@ public class Comment extends AppCompatActivity {
             }
         });
 
-        adapter = new CommentRecyclerAdapter(getApplicationContext(), list);
+        adapter = new CommentRecyclerAdapter(Comment.this, list);
         recyclerView.setAdapter(adapter);
 
     }

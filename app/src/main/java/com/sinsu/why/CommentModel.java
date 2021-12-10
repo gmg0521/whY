@@ -4,6 +4,7 @@ public class CommentModel {
     String comment;
     String userName;
     String userProfileImg;
+    String commentID;
 
     public String getComment() {
         return comment;
@@ -27,5 +28,13 @@ public class CommentModel {
 
     public void setUserProfileImg(String userProfileImg) {
         this.userProfileImg = userProfileImg;
+    }
+
+    public void setCommentID(String commentID) {
+        this.commentID = commentID;
+    }
+
+    public String getCommentID() {
+        return commentID;
     }
 }

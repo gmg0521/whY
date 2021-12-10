@@ -17,6 +17,9 @@
         android:theme="@style/Theme.WhY"
         android:usesCleartextTraffic="true">
         <activity
+            android:name=".FAQ"
+            android:exported="false" />
+        <activity
             android:name=".Comment"
             android:exported="false" />
         <activity
