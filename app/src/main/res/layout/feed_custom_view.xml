@@ -47,7 +47,7 @@
         android:orientation="vertical">
 
         <TextView
-            android:id="@+id/commentUploadTimeText"
+            android:id="@+id/uploadTimeText"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="2h ago"
@@ -68,7 +68,7 @@
                 app:tint="#FF0000" />
 
             <TextView
-                android:id="@+id/commentHeartCountText"
+                android:id="@+id/heartCountText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"

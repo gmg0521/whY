@@ -1,6 +1,6 @@
 package com.sinsu.why;
 
-public class PostModel {
+public class PostModel implements Comparable<PostModel>{
 
     public String title;
 
@@ -53,4 +53,13 @@ public class PostModel {
         return heartCount;
     }
 
+
+    @Override
+    public int compareTo(PostModel o) {
+        if (o.heartCount < heartCount)
+            return -1;
+        else if (o.heartCount > heartCount)
+            return 1;
+        return 0;
+    }
 }

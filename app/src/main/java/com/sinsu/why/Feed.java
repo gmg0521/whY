@@ -68,10 +68,9 @@ public class Feed extends AppCompatActivity {
         }
 
         bottomNavigationView.setOnNavigationItemSelectedListener(item -> {
-            FragmentTransaction transaction =fragmentManager.beginTransaction();
             switch (item.getItemId()){
                 case R.id.navigation_feed:
-                    getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, mainFeed).commit();
+                    fragmentManager.beginTransaction().replace(R.id.frameLayout, mainFeed).commit();
                     break;
                 case R.id.navigation_question:
                     getSupportFragmentManager().beginTransaction().replace(R.id.frameLayout, question).commit();

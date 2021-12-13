@@ -40,7 +40,7 @@ public class Answer extends AppCompatActivity {
         String title = intent.getStringExtra("title");
 
         tvAnswerQuestion = findViewById(R.id.tvAnswerQuestion);
-        answerEdt = (EditText) findViewById(R.id.answerEditText);
+        answerEdt = findViewById(R.id.answerEditText);
         btnAnswerUpload = findViewById(R.id.btnAnswerUpload);
 
         databaseReference = AppManager.getDatabase().getReference("Contents").child("Content").child(title).child("Comments");
@@ -58,29 +58,33 @@ public class Answer extends AppCompatActivity {
         });
 
         btnAnswerUpload.setOnClickListener(v -> {
-            CommentModel comment = new CommentModel();
-            comment.setUserName(AppManager.getCurrentUserName());
-            comment.setComment(answerEdt.getText().toString());
-            comment.setCommentID(commentId);
-
             DatabaseReference mDb = AppManager.getDatabase().getReference("User")
                     .child(AppManager.getCurrentUserName())
                     .child("userProfileImg");
-            mDb.get().addOnCompleteListener(task -> {
-                if (!task.isSuccessful())
-                    Toast.makeText(getApplicationContext(), "사용자 이미지를 불러오지 못했습니다.", Toast.LENGTH_SHORT).show();
-                else
-                    userProfileImg = task.getResult().getValue().toString();
+
+            mDb.addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(@NonNull DataSnapshot snapshot) {
+                    CommentModel comment = new CommentModel();
+                    comment.setUserName(AppManager.getCurrentUserName());
+                    comment.setComment(answerEdt.getText().toString());
+                    comment.setCommentID(commentId);
+                    userProfileImg = String.valueOf(snapshot.getValue());
+                    comment.setUserProfileImg(userProfileImg);
+
+                    databaseReference = AppManager.getDatabase().getReference("Contents")
+                            .child("Content").child(title).child("Comments");
+
+                    databaseReference.child(commentId).setValue(comment);
+                    onBackPressed();
+                    Toast.makeText(AppManager.ApplicationContext(), "답변이 등록 되었습니다!", Toast.LENGTH_SHORT).show();
+                }
+
+                @Override
+                public void onCancelled(@NonNull DatabaseError error) {
+
+                }
             });
-
-            comment.setUserProfileImg(userProfileImg);
-
-            databaseReference = AppManager.getDatabase().getReference("Contents")
-                    .child("Content").child(title).child("Comments");
-
-            databaseReference.child(commentId).setValue(comment);
-            onBackPressed();
-            Toast.makeText(AppManager.ApplicationContext(), "답변이 등록 되었습니다!", Toast.LENGTH_SHORT).show();
         });
 
     }

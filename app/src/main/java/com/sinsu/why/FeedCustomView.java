@@ -22,7 +22,7 @@ public class FeedCustomView extends RecyclerView.Adapter<FeedCustomView.ViewHold
     private Context context;
     private List<PostModel> list;
 
-    String userName, title, content;
+    String userName, title, content, heartCount;
 
     String userProfileImg;
 
@@ -46,6 +46,7 @@ public class FeedCustomView extends RecyclerView.Adapter<FeedCustomView.ViewHold
     public void onBindViewHolder(@NonNull FeedCustomView.ViewHolder holder, int position) {
         int itemPosition = position;
 
+        heartCount = String.valueOf(list.get(itemPosition).getHeartCount());
         userProfileImg = list.get(itemPosition).getUserProfileImg();
         title = list.get(itemPosition).getTitle();
         content = list.get(itemPosition).getContent().split(" ")[0];
@@ -53,6 +54,7 @@ public class FeedCustomView extends RecyclerView.Adapter<FeedCustomView.ViewHold
 
         holder.titleText.setText(title);
         holder.contentText.setText(content);
+        holder.tvHeartCount.setText(heartCount);
         Glide.with(holder.postView)
                 .load(userProfileImg)
                 .circleCrop()
@@ -74,6 +76,8 @@ public class FeedCustomView extends RecyclerView.Adapter<FeedCustomView.ViewHold
         public TextView titleText;
         public TextView contentText;
 
+        public TextView tvHeartCount;
+
         public ImageView userProfileImgView;
 
         public ViewHolder(@NonNull View itemView) {
@@ -84,6 +88,7 @@ public class FeedCustomView extends RecyclerView.Adapter<FeedCustomView.ViewHold
             titleText = itemView.findViewById(R.id.feedTitleText);
             contentText = itemView.findViewById(R.id.commentContentText);
             userProfileImgView = itemView.findViewById(R.id.commentProfileImg);
+            tvHeartCount = itemView.findViewById(R.id.heartCountText);
 
             userNameDes = itemView.findViewById(R.id.commentHeartImg);
 
