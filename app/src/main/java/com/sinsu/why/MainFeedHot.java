@@ -1,5 +1,6 @@
 package com.sinsu.why;
 
+import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.view.LayoutInflater;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.annotation.RequiresApi;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -23,6 +25,8 @@ import com.google.firebase.database.ValueEventListener;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
+import java.util.Comparator;
+import java.util.function.UnaryOperator;
 
 public class MainFeedHot extends Fragment {
 
@@ -30,8 +34,6 @@ public class MainFeedHot extends Fragment {
     private RecyclerView.Adapter adapter;
     private ArrayList<PostModel> list;
     private RecyclerView.LayoutManager layoutManager;
-
-    private MainFeed mainFeed = new MainFeed();
 
     private DatabaseReference databaseReference;
 
@@ -62,13 +64,14 @@ public class MainFeedHot extends Fragment {
         databaseReference = AppManager.getDatabase().getReference("Contents")
                 .child("Content");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onDataChange(@NonNull DataSnapshot dataSnapshot) {
                 for (DataSnapshot snapshot : dataSnapshot.getChildren()) {
                     PostModel postModel = snapshot.getValue(PostModel.class);
                     list.add(postModel);
                 }
-                Collections.sort(list);
+                list.sort((Comparator.comparing(PostModel::getHeartCount).reversed()));
                 adapter.notifyDataSetChanged();
             }
 

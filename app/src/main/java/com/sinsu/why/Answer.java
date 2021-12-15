@@ -2,6 +2,7 @@ package com.sinsu.why;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -16,6 +17,8 @@ import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
+
+import java.util.Date;
 
 public class Answer extends AppCompatActivity {
 
@@ -45,6 +48,8 @@ public class Answer extends AppCompatActivity {
 
         databaseReference = AppManager.getDatabase().getReference("Contents").child("Content").child(title).child("Comments");
 
+        tvAnswerQuestion.setText(title);
+
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
@@ -71,6 +76,10 @@ public class Answer extends AppCompatActivity {
                     comment.setCommentID(commentId);
                     userProfileImg = String.valueOf(snapshot.getValue());
                     comment.setUserProfileImg(userProfileImg);
+
+                    Long now = SystemClock.elapsedRealtime();
+                    Date mDate = new Date(now);
+                    comment.setUploadTime(mDate);
 
                     databaseReference = AppManager.getDatabase().getReference("Contents")
                             .child("Content").child(title).child("Comments");

@@ -1,6 +1,8 @@
 package com.sinsu.why;
 
 import android.content.Context;
+import android.content.Intent;
+import android.text.format.Time;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +30,11 @@ public class YditorRecyclerAdapter extends RecyclerView.Adapter<YditorRecyclerAd
             super(itemView);
 
             yditorItemView = itemView.findViewById(R.id.yditorItemView);
+
+            yditorItemView.setOnClickListener(v -> {
+                Intent intent = new Intent(AppManager.ApplicationContext(), YditorContent.class);
+                AppManager.ApplicationContext().startActivity(intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK));
+            });
 
             yditorImg = itemView.findViewById(R.id.yditorImg);
             yditorTitle = itemView.findViewById(R.id.yditorTitle);
@@ -67,6 +74,7 @@ public class YditorRecyclerAdapter extends RecyclerView.Adapter<YditorRecyclerAd
         holder.yditorTitle.setText(title);
         holder.yditorName.setText(name);
         holder.yditorDes.setText(des);
+
     }
 
     @Override

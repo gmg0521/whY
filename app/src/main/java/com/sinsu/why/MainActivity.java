@@ -3,6 +3,8 @@ package com.sinsu.why;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.SystemClock;
+import android.util.Log;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -11,8 +13,12 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.google.firebase.auth.FirebaseAuth;
 import com.kakao.sdk.user.UserApiClient;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+
 public class MainActivity extends AppCompatActivity {
 
+    private static final String TAG = "MAINACTIVITY";
     private Intent intent;
     FirebaseAuth mAuth;
 

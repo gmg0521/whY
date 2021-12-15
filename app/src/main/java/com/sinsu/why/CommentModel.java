@@ -1,10 +1,13 @@
 package com.sinsu.why;
 
+import java.util.Date;
+
 public class CommentModel {
     String comment;
     String userName;
     String userProfileImg;
     String commentID;
+    Date uploadTime;
 
     public String getComment() {
         return comment;
@@ -36,5 +39,13 @@ public class CommentModel {
 
     public String getCommentID() {
         return commentID;
+    }
+
+    public Date getUploadTime() {
+        return uploadTime;
+    }
+
+    public void setUploadTime(Date uploadTime) {
+        this.uploadTime = uploadTime;
     }
 }

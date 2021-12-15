@@ -1,6 +1,7 @@
 package com.sinsu.why;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.constraintlayout.widget.ConstraintSet;
@@ -10,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -24,6 +26,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 
 public class Comment extends AppCompatActivity {
 
@@ -60,6 +63,7 @@ public class Comment extends AppCompatActivity {
                 .child(title)
                 .child("Comments");
         databaseReference.addListenerForSingleValueEvent(new ValueEventListener() {
+            @RequiresApi(api = Build.VERSION_CODES.N)
             @Override
             public void onDataChange(@NonNull DataSnapshot snapshot) {
                 for (DataSnapshot dataSnapshot: snapshot.getChildren()) {
@@ -70,6 +74,9 @@ public class Comment extends AppCompatActivity {
                     recyclerView.setVisibility(View.GONE);
                     noComments.setVisibility(View.VISIBLE);
                 }
+
+                list.sort(Comparator.comparing(CommentModel::getUploadTime).reversed());
+
                 adapter.notifyDataSetChanged();
             }
 

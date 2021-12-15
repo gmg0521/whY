@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.os.SystemClock;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
@@ -22,6 +23,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.ValueEventListener;
 
+import java.util.Date;
 import java.util.List;
 
 public class CommentRecyclerAdapter extends RecyclerView.Adapter<CommentRecyclerAdapter.ViewHolder> {
@@ -32,6 +34,7 @@ public class CommentRecyclerAdapter extends RecyclerView.Adapter<CommentRecycler
     String userName, content, commentId;
 
     String userProfileImg;
+    private Date uploadTime;
 
     public CommentRecyclerAdapter(Context context, List<CommentModel> list) {
         this.context = context;
@@ -58,12 +61,33 @@ public class CommentRecyclerAdapter extends RecyclerView.Adapter<CommentRecycler
         userName = list.get(itemPosition).getUserName();
         commentId = list.get(itemPosition).getCommentID();
 
+        uploadTime = list.get(itemPosition).getUploadTime();
+
+        Long now = SystemClock.elapsedRealtime();
+        Date mDate = new Date(now);
+        Long timeGap = mDate.getTime() - uploadTime.getTime();
+
+        String time;
+
+        Double gapResult = ((timeGap.doubleValue()/ (1000 * 60 * 60)));
+
+        if (gapResult % 24 == 0) {
+            time = uploadTime.getMonth() + "/" + uploadTime.getDay();
+        } else if (gapResult % 24 >= 1){
+            time = ((int) (gapResult % 24)) + "시간 전";
+        } else if (gapResult * 60 >= 1) {
+            time = ((int) ((gapResult * 60) % 60)) + "분 전";
+        } else {
+            time = "방금 전";
+        }
+        
         holder.contentText.setText(content);
         Glide.with(holder.commentView)
                 .load(userProfileImg)
                 .circleCrop()
                 .into(holder.userProfileImgView);
         holder.userNameDes.setContentDescription(userName);
+        holder.commentUploadTime.setText(time);
     }
 
     @Override
@@ -77,7 +101,7 @@ public class CommentRecyclerAdapter extends RecyclerView.Adapter<CommentRecycler
 
         public ImageView userNameDes; // 게시물을 저장한 유저이름을 가져오기 위한 변수. 좋아요 버튼임
 
-        public TextView contentText;
+        public TextView contentText, commentUploadTime;
 
         public ImageView userProfileImgView;
 
@@ -88,6 +112,8 @@ public class CommentRecyclerAdapter extends RecyclerView.Adapter<CommentRecycler
 
             contentText = itemView.findViewById(R.id.commentContentText);
             userProfileImgView = itemView.findViewById(R.id.commentProfileImg);
+
+            commentUploadTime = itemView.findViewById(R.id.uploadTimeText);
 
             userNameDes = itemView.findViewById(R.id.commentHeartImg);
 
@@ -108,6 +134,7 @@ public class CommentRecyclerAdapter extends RecyclerView.Adapter<CommentRecycler
                                                 .child(commentId);
                                         db.removeValue();
                                         Toast.makeText(context, "답변을 삭제했습니다!", Toast.LENGTH_SHORT).show();
+                                        Comment.adapter.notifyDataSetChanged();
                                     })
                             .show();
                 } else {

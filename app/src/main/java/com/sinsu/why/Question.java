@@ -2,6 +2,8 @@ package com.sinsu.why;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.SystemClock;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -17,6 +19,9 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.database.DatabaseReference;
 import com.kakao.sdk.user.UserApiClient;
 import com.kakao.sdk.user.model.User;
+
+import java.text.SimpleDateFormat;
+import java.util.Date;
 
 import kotlin.Unit;
 import kotlin.jvm.functions.Function2;
@@ -84,6 +89,10 @@ public class Question extends Fragment {
         postModel.setTitle(t);
         postModel.setContent(c);
         postModel.setHeartCount(0);
+
+        Long now = SystemClock.elapsedRealtime();
+        Date mDate = new Date(now);
+        postModel.setUploadTime(mDate);
 
         DatabaseReference databaseReference = AppManager.getDatabase().getReference("Contents")
                 .child("Content")

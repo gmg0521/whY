@@ -1,5 +1,7 @@
 package com.sinsu.why;
 
+import java.util.Date;
+
 public class PostModel implements Comparable<PostModel>{
 
     public String title;
@@ -11,7 +13,17 @@ public class PostModel implements Comparable<PostModel>{
 
     public int heartCount;
 
+    public Date uploadTime;
+
     public PostModel() {   }
+
+    public Date getUploadTime() {
+        return uploadTime;
+    }
+
+    public void setUploadTime(Date uploadTime) {
+        this.uploadTime = uploadTime;
+    }
 
     public String getTitle() {
         return title;
